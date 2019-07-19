@@ -2,7 +2,7 @@ import json
 from urllib.parse import urlparse
 import requests
 
-subscription_key = "18bdbe3fd8354591947ad37f9b489d10"
+subscription_key = ''
 vision_base_url = "https://eastus.api.cognitive.microsoft.com/vision/v2.0/"
 analyze_url = vision_base_url + "describe"
 
