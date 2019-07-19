@@ -19,17 +19,17 @@ SAD_REPLY = ['This is unfortunate :(', 'Sad to hear about these news!', 'This is
              'Hope everything works out!']
 
 # Twitter API
-CONSUMER_KEY = 'HJ9nzMAXWQkzvA7g2lnqCvtDk'
-CONSUMER_SECRET = 'yY07NWF9JctWxl8NDvUc6BE0cJnBGUhaOJmyQmBxDiXELb3l54'
-ACCESS_KEY = '1137386491766759430-WIy1PMjAGrxc0Apeq13yLrFDv2WcKD'
-ACCESS_SECRET = 'hpyW9naJztHoRRYt8g17uB3Rw631h4iA02exfWq2sq5tx'
+CONSUMER_KEY = ''
+CONSUMER_SECRET = ''
+ACCESS_KEY = ''
+ACCESS_SECRET = ''
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
 # Computer Vision API
-SUBSCRIPTION_KEY = "18bdbe3fd8354591947ad37f9b489d10"
+SUBSCRIPTION_KEY = ""
 
 VISION_BASE_URL = "https://eastus.api.cognitive.microsoft.com/vision/v2.0/"
 ANALYZE_URL = VISION_BASE_URL + "describe"
