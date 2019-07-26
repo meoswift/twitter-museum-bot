@@ -168,9 +168,7 @@ def main():
     get_url_list()
     while True:
         tweet_with_media()
-        print('finished media tweet')
         follow()
-        print('finished follow')
         retweet_only()
         retweet_with_comment()
         sleep(30)

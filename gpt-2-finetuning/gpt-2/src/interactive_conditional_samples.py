@@ -4,6 +4,7 @@ import fire
 import json
 import os
 import numpy as np
+import requests
 import tensorflow as tf
 import tweepy
 from tweepy import *
@@ -11,11 +12,6 @@ import random
 from newsapi.newsapi_client import NewsApiClient
 
 import model, sample, encoder
-
-# tweeting KEYWORDS
-KEYWORDS = ['#Museum', '#Art Preservation', 'Historical architecture', '#Architecture', 'Modern art',
-            'Museum conservation', 'Architects', 'Art museums', 'Historical buildings', 'City architecture',
-            'Museum architects', 'Museum artifacts', 'Rural architecture']
 
 # Twitter API
 CONSUMER_KEY = 'HJ9nzMAXWQkzvA7g2lnqCvtDk'
@@ -30,16 +26,19 @@ api = tweepy.API(auth)
 # News API
 news_api = NewsApiClient(api_key='2152b1abf9bf489e946a24a24bcab732')
 
+# Create a list of headlines
+headlines_list = []
+
 
 def get_headlines():
-    headlines = news_api.get_everything(q='architecture, museum, art', language='en')
-    articles = headlines['articles']
-    headlines_list = []
-    for article in articles:
-        headline = article['description']
-        headlines_list.append(headline)
-        print(headline)
-        print("-" * 80)
+    try:
+        headlines = news_api.get_everything(q='architecture, museum, art', language='en')
+        articles = headlines['articles']
+        for article in articles:
+            headline = article['title'].capitalize()
+            headlines_list.append(headline)
+    except requests.exceptions.HTTPError:
+        pass
 
 
 def interact_model(
@@ -81,14 +80,10 @@ def interact_model(
         saver.restore(sess, ckpt)
 
         while True:
-            key_index = random.randint(0, len(KEYWORDS) - 1)
-            raw_text = KEYWORDS[key_index]
-            '''
-            raw_text = input("Model prompt >>> ")
-            while not raw_text:
-                print('Prompt should not be empty!')
-                raw_text = input("Model prompt >>> ")
-            '''
+            key_index = random.randint(0, len(headlines_list) - 1)
+            raw_text = headlines_list[key_index]
+            print(raw_text)
+            print('=' * 80)
             context_tokens = enc.encode(raw_text)
             for _ in range(nsamples // batch_size):
                 out = sess.run(output, feed_dict={
@@ -96,7 +91,7 @@ def interact_model(
                 })[:, len(context_tokens):]
                 for i in range(batch_size):
                     response = enc.decode(out[i])
-                    final_text = raw_text + response + ' ...'
+                    final_text = raw_text + response
                     return final_text
 
 
@@ -106,9 +101,14 @@ def update_status(tweet):
         print('tweeted')
     except tweepy.TweepError as e:
         print(e)
+        pass
+
+
+def main():
+    get_headlines()
+    text = fire.Fire(interact_model)
+    update_status(text)
 
 
 if __name__ == '__main__':
-    # text = fire.Fire(interact_model)
-    # update_status(text)
-    get_headlines()
+    main()
