@@ -4,7 +4,6 @@ import random
 from time import sleep
 import requests
 import os
-import urllib
 
 KEYWORD = ['museum', 'museum preservation', 'art museum', 'museum exhibition', 'art reservation']
 HAPPY_KEYWORD = ['amazing', 'happy', 'good', 'interesting', 'great', 'exciting', 'encouraged', 'fascinating',
@@ -14,22 +13,19 @@ HAPPY_REPLY = ['Amazing!', 'This makes my day', 'Such a great job!', 'Absolutely
                'Museums are the best place on Earth.', 'Education is better with the existence of museums!',
                'I love this', 'Super cool project!!', 'A worthy read.', 'So glad I came across this!',
                'Wow!', 'Speechless with this']
-SAD_KEYWORD = ['unfortunate', 'unfortunately', 'unacceptable', 'sad', 'terrible', 'worst']
-SAD_REPLY = ['This is unfortunate :(', 'Sad to hear about these news!', 'This is not good',
-             'Hope everything works out!']
 
 # Twitter API
-CONSUMER_KEY = ''
-CONSUMER_SECRET = ''
-ACCESS_KEY = ''
-ACCESS_SECRET = ''
+CONSUMER_KEY = 'HJ9nzMAXWQkzvA7g2lnqCvtDk'
+CONSUMER_SECRET = 'yY07NWF9JctWxl8NDvUc6BE0cJnBGUhaOJmyQmBxDiXELb3l54'
+ACCESS_KEY = '1137386491766759430-WIy1PMjAGrxc0Apeq13yLrFDv2WcKD'
+ACCESS_SECRET = 'hpyW9naJztHoRRYt8g17uB3Rw631h4iA02exfWq2sq5tx'
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
 # Computer Vision API
-SUBSCRIPTION_KEY = ""
+SUBSCRIPTION_KEY = "18bdbe3fd8354591947ad37f9b489d10"
 
 VISION_BASE_URL = "https://eastus.api.cognitive.microsoft.com/vision/v2.0/"
 ANALYZE_URL = VISION_BASE_URL + "describe"
@@ -100,16 +96,6 @@ def print_caption(subscription_key, analyze_url, image_url):
         pass
 
 
-# random retweets
-def retweet_and_reply():
-    random_index = random.randint(0, 100)
-    print(random_index)
-    if random_index % 2 == 0:
-        retweet_only()
-    else:
-        retweet_with_comment()
-
-
 # only retweet
 def retweet_only():
     print('only rt')
@@ -131,8 +117,8 @@ def retweet_with_comment():
             reply_index = random.randint(0, len(HAPPY_REPLY) - 1)
             user_displayname = tweet.user.screen_name
             if not tweet.retweeted and tweet.favorite_count >= 200 and user_displayname != 'museumistic':
-                reply_status = HAPPY_REPLY[
-                                   reply_index] + 'https://twitter.com/' + user_displayname + '/status/' + tweet.id_str
+                reply_status = HAPPY_REPLY[reply_index] + 'https://twitter.com/' + user_displayname + '/status/' \
+                               + tweet.id_str
                 api.update_status(status=reply_status)
                 print('tweet updated')
 
@@ -149,7 +135,7 @@ def retweet_from_search():
         print(tweet.favorite_count)  # debugging purposes
         print(tweet.retweeted)
         try:
-            if not tweet.retweeted and tweet.favorite_count >= 30:
+            if not tweet.retweeted and tweet.favorite_count >= 100:
                 if not tweet.favorited:
                     api.create_favorite(tweet.id)
                     api.retweet(tweet.id)
@@ -167,9 +153,10 @@ def retweet_from_timeline():
         print(tweet.favorite_count)  # debugging purposes
         print(tweet.retweeted)
         try:
-            if not tweet.favorited:
+            user_displayname = tweet.user.screen_name
+            if not tweet.favorited and user_displayname != 'museumistic':
                 api.create_favorite(tweet.id)
-            if not tweet.retweeted and tweet.favorite_count > 20:
+            if not tweet.retweeted and tweet.favorite_count > 100:
                 api.retweet(tweet.id)
                 print('retweeted')
 
@@ -184,7 +171,8 @@ def main():
         print('finished media tweet')
         follow()
         print('finished follow')
-        retweet_and_reply()
+        retweet_only()
+        retweet_with_comment()
         sleep(30)
 
 
