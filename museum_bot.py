@@ -15,10 +15,10 @@ HAPPY_REPLY = ['Amazing!', 'This makes my day', 'Such a great job!', 'Absolutely
                'Wow!', 'Speechless with this']
 
 # Twitter API
-CONSUMER_KEY = 'HJ9nzMAXWQkzvA7g2lnqCvtDk'
-CONSUMER_SECRET = 'yY07NWF9JctWxl8NDvUc6BE0cJnBGUhaOJmyQmBxDiXELb3l54'
-ACCESS_KEY = '1137386491766759430-WIy1PMjAGrxc0Apeq13yLrFDv2WcKD'
-ACCESS_SECRET = 'hpyW9naJztHoRRYt8g17uB3Rw631h4iA02exfWq2sq5tx'
+CONSUMER_KEY = ''
+CONSUMER_SECRET = ''
+ACCESS_KEY = ''
+ACCESS_SECRET = ''
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
