@@ -25,7 +25,7 @@ auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
 # Computer Vision API
-SUBSCRIPTION_KEY = "18bdbe3fd8354591947ad37f9b489d10"
+SUBSCRIPTION_KEY = ""
 
 VISION_BASE_URL = "https://eastus.api.cognitive.microsoft.com/vision/v2.0/"
 ANALYZE_URL = VISION_BASE_URL + "describe"
